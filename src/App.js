@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import WeatherCard from "./components/WeatherCard";
-// import Search from "./components/Search.jsx";
 
 function App() {
   const [data, setData] = useState(null);
