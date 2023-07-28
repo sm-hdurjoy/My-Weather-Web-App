@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function RecentSearch() {
-  return (
-    <div>RecentSearch</div>
-  )
+  return <div>RecentSearch</div>;
 }

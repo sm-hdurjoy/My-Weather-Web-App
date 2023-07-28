@@ -8,26 +8,22 @@ function App() {
   const [location, setLocation] = useState("");
   const [currentdata, setCurrentData] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const weatherAPI = 'b763089d5aaf402dbda184822232707';
-  const locationAPI = '57cb9e36ef1f4e138e27124523b3c810';
-  // const [latitude, setLatitude] = useState(null);
-  // const [longitude, setlongitude] = useState(null);
+  const weatherAPI = "b763089d5aaf402dbda184822232707";
+  const locationAPI = "57cb9e36ef1f4e138e27124523b3c810";
+
   let latitude;
   let longitude;
-  // const weather_api_key = process.env.WEATHER_API_KEY;
-  // console.log(weather_api_key);
 
   useEffect(() => {
     const success = (position) => {
       // console.log(position);
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;
-      // setLatitude(position.coords.latitude);
       console.log(latitude);
-      // setlongitude(position.coords.longitude);
       console.log(longitude);
       const locationURL = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=${locationAPI}`;
 
+      // fetching location according to latitude and longitude
       fetch(locationURL)
         .then((res) => res.json())
         .then((locationDecode) => {
@@ -43,13 +39,12 @@ function App() {
     navigator.geolocation.getCurrentPosition(success, error);
   }, [latitude, longitude]);
 
-  // const API_KEY=process.env.API_KEY;
-
   const searchURL = `http://api.weatherapi.com/v1/current.json?key=${weatherAPI}&q=${location}`;
 
   useEffect(() => {
     const currentLocationURL = `http://api.weatherapi.com/v1/current.json?key=${weatherAPI}&q=${currentLocation}`;
     console.log("currentlocation call");
+    // Fetching current detected location's weather data
     fetch(currentLocationURL)
       .then((res) => res.json())
       .then((response) => {
@@ -71,6 +66,7 @@ function App() {
   const searchLocation = (event) => {
     if (event.key === "Enter") {
       console.log("search city call");
+      // Fetching searched city weather data
       fetch(searchURL)
         .then((res) => res.json())
         .then((response) => {
