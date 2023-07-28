@@ -7,17 +7,45 @@ function App() {
   const [location, setLocation] = useState("");
 
   const [currentdata, setCurrentData] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState("Dhaka");
+  const [currentLocation, setCurrentLocation] = useState(null);
+  // const [latitude, setLatitude] = useState(null);
+  // const [longitude, setlongitude] = useState(null);
+  let latitude;
+  let longitude;
+
+  useEffect(() => {
+    const success = (position) => {
+      // console.log(position);
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
+      // setLatitude(position.coords.latitude);
+      console.log(latitude);
+      // setlongitude(position.coords.longitude);
+      console.log(longitude);
+      const locationURL = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=57cb9e36ef1f4e138e27124523b3c810`;
+
+      fetch(locationURL)
+        .then((res) => res.json())
+        .then((locationDecode) => {
+          // console.log(locationDecode);
+          setCurrentLocation(locationDecode.features[0].properties.city);
+        });
+    };
+
+    const error = () => {
+      console.log("Unable to get location");
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error);
+  }, [latitude, longitude]);
+
   // const API_KEY=process.env.API_KEY;
 
-  if ("Geolocation" in navigator) {
-    const locationnn = navigator.geolocation.getCurrentPosition();
-    console.log(locationnn);
-  }
   const searchURL = `http://api.weatherapi.com/v1/current.json?key=b763089d5aaf402dbda184822232707&q=${location}`;
 
   useEffect(() => {
     const currentLocationURL = `http://api.weatherapi.com/v1/current.json?key=b763089d5aaf402dbda184822232707&q=${currentLocation}`;
+    console.log('currentlocation call');
     fetch(currentLocationURL)
       .then((res) => res.json())
       .then((response) => {
@@ -34,10 +62,11 @@ function App() {
         };
         setCurrentData(currentWeatherData);
       });
-  });
+  }, [currentLocation]);
 
   const searchLocation = (event) => {
     if (event.key === "Enter") {
+      console.log('search city call');
       fetch(searchURL)
         .then((res) => res.json())
         .then((response) => {
