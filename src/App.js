@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
-
 import WeatherCard from "./components/WeatherCard";
+// import dotenv from "dotenv";
+// dotenv.config();
 
 function App() {
   const [data, setData] = useState(null);
   const [location, setLocation] = useState("");
-
   const [currentdata, setCurrentData] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const weatherAPI = 'b763089d5aaf402dbda184822232707';
+  const locationAPI = '57cb9e36ef1f4e138e27124523b3c810';
   // const [latitude, setLatitude] = useState(null);
   // const [longitude, setlongitude] = useState(null);
   let latitude;
   let longitude;
+  // const weather_api_key = process.env.WEATHER_API_KEY;
+  // console.log(weather_api_key);
 
   useEffect(() => {
     const success = (position) => {
@@ -22,7 +26,7 @@ function App() {
       console.log(latitude);
       // setlongitude(position.coords.longitude);
       console.log(longitude);
-      const locationURL = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=57cb9e36ef1f4e138e27124523b3c810`;
+      const locationURL = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=${locationAPI}`;
 
       fetch(locationURL)
         .then((res) => res.json())
@@ -41,11 +45,11 @@ function App() {
 
   // const API_KEY=process.env.API_KEY;
 
-  const searchURL = `http://api.weatherapi.com/v1/current.json?key=b763089d5aaf402dbda184822232707&q=${location}`;
+  const searchURL = `http://api.weatherapi.com/v1/current.json?key=${weatherAPI}&q=${location}`;
 
   useEffect(() => {
-    const currentLocationURL = `http://api.weatherapi.com/v1/current.json?key=b763089d5aaf402dbda184822232707&q=${currentLocation}`;
-    console.log('currentlocation call');
+    const currentLocationURL = `http://api.weatherapi.com/v1/current.json?key=${weatherAPI}&q=${currentLocation}`;
+    console.log("currentlocation call");
     fetch(currentLocationURL)
       .then((res) => res.json())
       .then((response) => {
@@ -66,7 +70,7 @@ function App() {
 
   const searchLocation = (event) => {
     if (event.key === "Enter") {
-      console.log('search city call');
+      console.log("search city call");
       fetch(searchURL)
         .then((res) => res.json())
         .then((response) => {
